@@ -1,7 +1,2 @@
-# Hugo output
-public/
-resources/
-.hugo_build.lock
-
-# Editor
-.vscode/
+node_modules
+pnpm-lock.yaml

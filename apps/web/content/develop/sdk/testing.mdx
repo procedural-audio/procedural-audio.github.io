@@ -1,0 +1,15 @@
+---
+title: "Automated Testing"
+order: 3
+---
+
+## Snapshot Rendering
+
+Use the headless renderer to export short audio clips as part of CI. Compare waveform hashes to
+detect regressions in your DSP graphs.
+
+## Integration Tips
+
+- Cache render outputs to keep pipelines fast.
+- Run loudness analysis to verify gain staging.
+- Combine with visual diffing when patches produce spectrograms or parameter logs.
