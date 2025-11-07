@@ -4,7 +4,26 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 const DOWNLOAD_BASE_URL = "https://github.com/procedural-audio/nodus/releases/download/latest"
 
-const DOWNLOADS = [
+type DownloadInstruction = {
+  text: string
+  code?: string
+}
+
+type DownloadArtifact = {
+  filename: string
+  label: string
+  description: string
+}
+
+type DownloadTab = {
+  slug: string
+  label: string
+  summary: string
+  instructions: DownloadInstruction[]
+  artifacts: DownloadArtifact[]
+}
+
+const DOWNLOADS: DownloadTab[] = [
   {
     slug: "macos",
     label: "macOS",
