@@ -1,4 +1,13 @@
-import { ArrowDownToLine } from "lucide-react"
+import { type ComponentType, type SVGProps } from "react"
+
+import {
+  Apple,
+  ArrowDownToLine,
+  MonitorSmartphone,
+  MonitorUp,
+  Smartphone,
+  SmartphoneCharging,
+} from "lucide-react"
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
@@ -13,11 +22,15 @@ type DownloadArtifact = {
   filename: string
   label: string
   description: string
+  url?: string
+  isExternal?: boolean
+  isPlaceholder?: boolean
 }
 
 type DownloadTab = {
   slug: string
   label: string
+  icon: ComponentType<SVGProps<SVGSVGElement>>
   summary: string
   instructions: DownloadInstruction[]
   artifacts: DownloadArtifact[]
@@ -27,6 +40,7 @@ const DOWNLOADS: DownloadTab[] = [
   {
     slug: "macos",
     label: "macOS",
+    icon: Apple,
     summary: "Universal .dmg with binaries signed for Apple silicon and Intel Macs.",
     instructions: [
       { text: "Download the disk image and open it from Finder." },
@@ -34,6 +48,13 @@ const DOWNLOADS: DownloadTab[] = [
       { text: "On the first launch, control-click the app and choose Open to approve Gatekeeper." },
     ],
     artifacts: [
+      {
+        filename: "mac-app-store",
+        label: "Mac App Store",
+        description: "Placeholder link to the Mac App Store listing.",
+        url: "https://apps.apple.com/placeholder",
+        isExternal: true,
+      },
       {
         filename: "procedure-macos.dmg",
         label: "Universal DMG",
@@ -44,6 +65,7 @@ const DOWNLOADS: DownloadTab[] = [
   {
     slug: "windows",
     label: "Windows",
+    icon: MonitorSmartphone,
     summary: "Portable .zip containing the Procedure.exe runner for Windows 10/11.",
     instructions: [
       { text: "Download the archive and extract it with Extract All." },
@@ -51,6 +73,13 @@ const DOWNLOADS: DownloadTab[] = [
       { text: "Launch Procedure.exe and allow Windows Defender SmartScreen if prompted." },
     ],
     artifacts: [
+      {
+        filename: "microsoft-store",
+        label: "Microsoft Store",
+        description: "Placeholder link to the Microsoft Store listing.",
+        url: "https://www.microsoft.com/store/apps/placeholder",
+        isExternal: true,
+      },
       {
         filename: "procedure-windows-x64.zip",
         label: "Windows Zip",
@@ -61,6 +90,7 @@ const DOWNLOADS: DownloadTab[] = [
   {
     slug: "linux",
     label: "Linux",
+    icon: MonitorUp,
     summary: "Choose the portable zip bundle or the snap package depending on your distro.",
     instructions: [
       { text: "Use the zip bundle for maximum portability on glibc-based distributions." },
@@ -85,6 +115,52 @@ const DOWNLOADS: DownloadTab[] = [
         filename: "procedure-linux-flatpak.flatpak",
         label: "Flatpak (.flatpak)",
         description: "Offline Flatpak bundle installable with flatpak install --bundle.",
+      },
+    ],
+  },
+  {
+    slug: "ios",
+    label: "iOS",
+    icon: Smartphone,
+    summary:
+      "Procedure Mobile lets you browse projects, review annotations, and trigger playback from an iPhone or iPad.",
+    instructions: [
+      { text: "Install Procedure from the App Store." },
+      { text: "Sign in with the same credentials you use on desktop builds." },
+    ],
+    artifacts: [
+      {
+        filename: "app-store",
+        label: "View on App Store",
+        description: "Opens the Procedure listing on the Apple App Store.",
+        url: "https://apps.apple.com/placeholder",
+        isExternal: true,
+      },
+    ],
+  },
+  {
+    slug: "android",
+    label: "Android",
+    icon: SmartphoneCharging,
+    summary:
+      "Get Procedure on Google Play for automatic updates, or sideload the APK for testing and offline devices.",
+    instructions: [
+      { text: "Install via Google Play for managed updates and in-app purchases." },
+      { text: "Use the APK download for QA devices or local labs." },
+    ],
+    artifacts: [
+      {
+        filename: "google-play",
+        label: "Google Play",
+        description: "Opens the Google Play listing in a new tab.",
+        url: "https://play.google.com/store/apps/details?id=com.placeholder",
+        isExternal: true,
+      },
+      {
+        filename: "procedure-android.apk",
+        label: "APK download",
+        description: "Placeholder direct APK link (coming soon).",
+        isPlaceholder: true,
       },
     ],
   },
@@ -115,6 +191,7 @@ export default function ProcedureStudioPage() {
           <TabsList className="flex flex-wrap gap-2">
             {DOWNLOADS.map((download) => (
               <TabsTrigger key={download.slug} value={download.slug} className="px-4">
+                <download.icon className="mr-2 h-4 w-4" aria-hidden="true" />
                 {download.label}
               </TabsTrigger>
             ))}
@@ -160,13 +237,25 @@ export default function ProcedureStudioPage() {
                           <span className="font-mono text-foreground">{artifact.filename}</span>
                         </p>
                       </div>
-                      <a
-                        href={`${DOWNLOAD_BASE_URL}/${artifact.filename}`}
-                        className="inline-flex items-center gap-2 rounded-md border border-border/50 bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:bg-primary/90"
-                      >
-                        <ArrowDownToLine className="h-4 w-4" />
-                        Download
-                      </a>
+                      {artifact.isPlaceholder ? (
+                        <button
+                          className="inline-flex cursor-not-allowed items-center gap-2 rounded-md border border-border/50 bg-muted px-4 py-2 text-sm font-medium text-muted-foreground"
+                          disabled
+                        >
+                          <ArrowDownToLine className="h-4 w-4" />
+                          Coming soon
+                        </button>
+                      ) : (
+                        <a
+                          href={artifact.url ?? `${DOWNLOAD_BASE_URL}/${artifact.filename}`}
+                          className="inline-flex items-center gap-2 rounded-md border border-border/50 bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:bg-primary/90"
+                          target={artifact.isExternal ? "_blank" : undefined}
+                          rel={artifact.isExternal ? "noreferrer" : undefined}
+                        >
+                          <ArrowDownToLine className="h-4 w-4" />
+                          {artifact.isExternal ? "Open" : "Download"}
+                        </a>
+                      )}
                     </div>
                   ))}
                 </div>
