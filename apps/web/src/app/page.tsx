@@ -14,9 +14,9 @@ export default function Home() {
       <Image
         src="/procedure.png"
         alt="Procedure"
-        width={320}
-        height={320}
-        className="h-auto w-full max-w-xs sm:max-w-sm"
+        width={620}
+        height={620}
+        className="h-auto w-full max-w-xs sm:max-w-lg"
         priority
       />
     </main>
