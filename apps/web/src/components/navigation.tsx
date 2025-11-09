@@ -33,14 +33,14 @@ function NavigationMenuDemo() {
           </NavigationMenuLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Software</NavigationMenuTrigger>
+          <NavigationMenuTrigger>Download</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-2 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
               <li className="row-span-3">
                 <NavigationMenuLink asChild>
                   <Link
                     className="from-muted/50 to-muted flex h-full w-full flex-col justify-end rounded-md bg-linear-to-b p-4 no-underline outline-hidden transition-all duration-200 select-none focus:shadow-md md:p-6"
-                    href="/software/procedure"
+                    href="/download/procedure"
                   >
                     <div className="mb-2 text-lg font-medium sm:mt-4">Procedure</div>
                     <p className="text-muted-foreground text-sm leading-tight">
@@ -49,13 +49,13 @@ function NavigationMenuDemo() {
                   </Link>
                 </NavigationMenuLink>
               </li>
-              <ListItem href="/software/player" title="Procedure Player">
+              <ListItem href="/download/player" title="Procedure Player">
                 Lightweight runtime for performing patches live or in installations.
               </ListItem>
-              <ListItem href="/software/server" title="Procedure Server">
+              <ListItem href="/download/server" title="Procedure Server">
                 Batch render stems and assets with scalable cloud infrastructure.
               </ListItem>
-              <ListItem href="/software/other" title="Toolbox">
+              <ListItem href="/download/other" title="Toolbox">
                 Companion utilities, CLIs, and integrations for the suite.
               </ListItem>
             </ul>
